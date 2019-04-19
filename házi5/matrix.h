@@ -84,8 +84,8 @@ class matrix
         }
     }
 
-	matrix(matrix&&) = default;
-	matrix<T>& operator=(matrix&&) = default;
+    matrix(matrix&&) = default;
+    matrix<T>& operator=(matrix&&) = default;
     T & operator()(int i, int j){return data[dim * i + j];}
     T const& operator()(int i, int j) const {return data[ dim * i + j];}
     T & operator[](int i){return data[i];}
@@ -111,13 +111,7 @@ class matrix
         dim = dimension;
         data = list;
     };
-/*
-    matrix<T>& operator*=(matrix<T> const& m)
-    {
-        detail::transform_matrix2((*this).data, m.data, (*this).data, add);
-        return *this;
-    }
-*/
+
     matrix<T>& operator-=(matrix<T> const& m)
     {
         detail::transform_matrix2((*this).data, m.data, (*this).data, sub);
@@ -135,14 +129,7 @@ class matrix
         detail::transform_matrix1((*this).data, (*this).data, [=](T const& x){return x / c;});
         return *this;
     }
-/*
-    matrix<T>& operator*=(matrix<T> const& m)
-    {
-        std::vector<T> temp = mat_mul((*this).data, m.data);        
-        (*this).data.swap(temp);
-        return *this;
-    }
-*/    
+
     int dimension() const
     {
 		return dim;
