@@ -1,3 +1,6 @@
+#include <cmath>
+#include <cassert>
+
 struct pendulum
 {
     pendulum():
@@ -10,13 +13,13 @@ struct pendulum
     {
     }
 
-    double teta; // A kitérsítés szöge.
+    double teta; // A kitÃ©rsÃ­tÃ©s szÃ¶ge.
 
-    double omega;  //szögsebesség
+    double omega;  //szÃ¶gsebessÃ©g
 
     double l; //a az inga hossza
 
-    double m; // az ingatest tömege.
+    double m; // az ingatest tÃ¶mege.
 
 };
 
@@ -103,3 +106,58 @@ class doublependulum
     double m_time;
 
 };
+
+doublependulum::doublependulum(const pendulum& upper, const pendulum& lower,double dt, double g) :
+    m_theta1(upper.teta),
+    m_omega1(upper.omega),
+    m_l1(upper.l), m_m1(upper.m),
+    m_theta2(lower.teta),
+    m_omega2(lower.omega),
+    m_l2(lower.l), m_m2(lower.m),
+    m_dt(dt), m_g(g), m_time(0.0)
+{
+}
+
+doublependulum::~doublependulum()
+{
+}
+
+void doublependulum::update(double newtime)
+{
+    assert(newtime >= m_time);
+    do
+    {
+        const double yin[Num_eq] = { m_teta1, m_omega1, m_theta2, m_omega2 };
+        double yout[Num_eq];
+
+        solveODEs(yin, yout);
+
+        m_teta1 = yout[Teta_1];
+        m_omega1 = yout[Omega_1];
+        m_theta2 = yout[Teta_2];
+        m_omega2 = yout[Omega_2];
+    } 
+    while ((m_time += m_dt) < newtime);
+}
+
+void doublependulum::derivs(const double *yin, double *dydx)
+{
+
+    const double delta = yin[Teta_2] - yin[Teta_1];
+
+    // â€˜Mâ€™ is the total mass of the system, m1 + m2;
+    const double M = m_m1 + m_m2;
+    
+    // Denominator expression for omega1
+    double den = M*m_l1 - m_m2*m_l1*cos(delta)*cos(delta);
+
+    // d teta / dt = omega, by definition
+    dydx[Teta_1] = yin[Omega_1];
+    dydx[Omega_1] = (m_m2*m_l1*yin[Omega_1]*yin[Omega_1]*sin(delta)*cos(delta) + m_m2*m_g*sin(yin[Teta_2])*cos(delta) + m_m2*m_l2*yin[Omega_2]*yin[Omega_2]*sin(delta) - M*m_g*sin(yin[Teta_1])) / den;
+    dydx[Teta_2] = yin[Omega_2];
+
+    // Multiply den by the length ratio of the two bobs
+    den *= m_l2 / m_l1;
+
+    dydx[Omega_2] = (-m_m2*m_l2*yin[Omega_2]*yin[Omega_2]*sin(delta)*cos(delta)+ M*m_g*sin(yin[Teta_1])*cos(delta) - M*m_l1*yin[Omega_1]*yin[Omega_1]*sin(delta) - M*m_g*sin(yin[Teta_2])) / den;
+}
