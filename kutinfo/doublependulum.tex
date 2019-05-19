@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage{ifxetex,ifluatex}
+\newif\ifxetexorluatex
+\ifxetex
+  \xetexorluatextrue
+\else
+  \ifluatex
+    \xetexorluatextrue
+  \else
+    \xetexorluatexfalse
+  \fi
+\fi
+
+\ifxetexorluatex
+  \usepackage{fontspec}
+\else
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{lmodern}
+\fi
+
+\usepackage{hyperref}
+\usepackage{amsmath}
+
+\title{Kettősinga szimuláció felhasználói dokumentációja}
+\author{Nógrádi Zsófia}
+
+\begin{document}
+\maketitle
+\pagebreak
+
+\section{A feladat}
+A kettősinga kaotikus mozgásának modellezésére íródott a program. A kettős inga két inga egymáshoz csatolásával keletkező egyszerű 
+rendszer, melynek mozgását a kezdeti feltételek erősen befolyásolják. Ez az objektum a legelterjedtebb demonstrációs erszköze a 
+kaotikus mozgásnak.
+
+\section{A fizikai leírása}
+Az alap fizikai ismereteinket használjuk fel arra, hogy felírjuk a Newton-féle erőtörtvényeket a rendszerre. A továbbiakban használjuk
+a következő jelöléseket: 
+
+\begin{align*}
+x &:  az ingatömeg vízszintes helyzete \\
+y &: az ingatömeg függőleges helyzete \\
+\theta &: az inga szöge \\
+L &: a kötél hossza \\
+F &: a kötélerő \\
+m &: az ingatömege \\
+g &: nehézségi gyorsulás értéke
+\end{align*}
+
+Pusztán geometriai tudáunkat elővéve felírjuk az ingatömegek helyzetét: 
+\begin{gather*}
+x_1=L_1 \sin \theta_1 \\
+y_1= - L_1 \cos \theta_1 \\
+x_2 = x_1 + L_2 \sin \theta_2 \\
+y_2= y_1 - L_2 \cos \theta_2 \\
+\end{gather*}
+
+Ezeket az egyenleteket kétszer deriválva megkapjuk a gyorsulás értékét, majd azt felhasználva felírhatjuk a dinamika alaptörvényét, 
+ami alapján $F=m \cdot a$ Az így kapott egyenleteket $\theta ''$-re rendezve adódnak azon differenciálegyenletek, amiket a programunk 
+Runge-Kutta-módszerrel oldja meg. A továbbiakban elsősorban jelölés szempontjából bevezetjük a szögsebességet $\omega $ ami éppen 
+$\theta$ első deriváltja. Így a Runge-Kuttának már négy elsőrendű differenciálegyenletet tudunk átadni, amit az meg tud oldani. Ezek 
+a következőek:
+
+\begin{gather*}
+\theta_1' = \omega_1 \\
+\theta_2' = \omega_2 \\
+\omega_1' = \frac{-g(2m_1+m_2)\sin \theta_1 - m_2\cdot g \cdot \sin(\theta_1-2\theta_2) - 2 \sin(\theta_1 - \theta_2)
+m_2(\omega_2^2 L_2 + \omega_1^2 L_1 \cos(\theta_1 - \theta_2))}{L_1(2m_1 + m_2 - m_2 \cdot \cos(2\theta_1 - 2 \theta_2))} \\
+\omega_2'=\frac{2 \sin(\theta_1 - \theta_2)(\omega_1^2 \cdot L_1(m_1+m_2) + g(m_1+m_2) \cos \theta_1 + \omega_2^2 \cdot L_2 
+\cdot m_2 \cos(\theta_1-\theta_2))}{L_2(2m_1+m_2-m_2\cos(2\theta_1 - 2 \theta_2))} \\
+\end{gather*}
+
+\section{Negyedrendű Runge-Kutta-módszer}
+A módszer differenciálegyenletrendszerek megoldására alkalmas. Ahogy azt a neve is sugallja, ez egy negyedrendű közelítő módszer, 
+ahol egy választott pici lépésközhöz n-edik (ahol n tipikus nagy) lépésben oldja meg a kezdetiértékproblémát.
+
+\section{A program fontosabb paraméterei}
+A program C++ program nyelven íródott, ami jól fordul CodeBlocks-ban Cmake, vagy C/C++ fordítással, és VisualStudioban is. Az
+eredményeket a módszer segítségével gyorsan adja meg és írja ki.
+
+\section{A program használata}
+Két fontos részből épül fel a projekt. Az első fájl egy header fájl ("rungekutta.h"), ebben találhatók az inga adatai, amelyek a 
+program elején vannak megadva, kommentelve, hogy melyik érték, mit jelöl a programban (a jelölések konzekvensek ezzel a segédlettel). 
+Majd a következőben definiált "derivs" függvényben szerepelnek a kettősingára jellemző differenciálegyenletek, amelyeket a következőben 
+definiált rungekutta függvény old meg a módszernek megfelelően, vagyis negyedrendű közelítéssel.
+\newline
+A program main.cpp-ben fut le, ahova be van hívva a korábban említett "rungekutta.h" header is. Itt megadjuk a lépésközöt, a kezdeti 
+és a végső időpillanatot illetve a $\theta$ és $\omega$ kezdetiértékei is itt vannak definiálva. A program ezután allocálja a kellő 
+memóriát az adatoknak, majd elvégzi a kitérésben szereplő szögekre való átírást, hogy a továbbiakban ezek fokokban legyen. Ezután jön
+a rungekutta futtatása és a kapott paraméterek kiírása.
+
+\end{document}
