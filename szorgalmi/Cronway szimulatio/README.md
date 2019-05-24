@@ -1,0 +1,1 @@
+A Cronway szimuláció párhuzamosítása.
