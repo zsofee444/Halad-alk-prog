@@ -86,6 +86,8 @@ class matrix
 
     matrix(matrix&&) = default;
     matrix<T>& operator=(matrix&&) = default;
+    matrix<T>(matrix<T>&& o) noexcept : dim(std::exchange(o.dim, 0)), data(std::move(o.data)) {}
+
     T & operator()(int i, int j){return data[dim * i + j];}
     T const& operator()(int i, int j) const {return data[ dim * i + j];}
     T & operator[](int i){return data[i];}
