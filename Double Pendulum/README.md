@@ -1,0 +1,1 @@
+A javított kettősinga szimuláció.
