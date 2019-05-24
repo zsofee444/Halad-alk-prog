@@ -35,7 +35,45 @@ int main(){
         cout<<add1<<endl;
         cout<<add_check<<endl;
     }
+
     
+    matrix<double> m3=m2;
+    matrix<double> move_add_check = m1 + std::move(m3);
+    if(!mat_eq(move_add_check, add_check, eps)){
+        cout<<"Addition problem, with move (1)"<<endl;
+        cout<<move_add_check<<endl;
+        cout<<add_check<<endl;
+    }
+
+    if(m3.size() != 0){
+       cout<<"Move error (1)!"<<endl; 
+    }
+
+    matrix<double> m4 = m2;
+    matrix<double> move_add_check2= std::move(m4) + m1;
+    if(!mat_eq(move_add_check2, add_check, eps)){
+        cout<<"Addition problem, with move"<<endl;
+        cout<<move_add_check2<<endl;
+        cout<<add_check<<endl;
+    }
+
+    if(m4.size() != 0){
+       cout<<"Move error!"<<endl; 
+    }
+    
+    matrix<double> m5 = m1;
+    matrix<double> m6 = m2;
+    matrix<double> move_add_check3 = std::move(m5) + std::move(m6);
+    if(!mat_eq(move_add_check3, add_check, eps)){
+        cout<<"Addition problem, with move (2)"<<endl;
+        cout<<move_add_check3<<endl;
+        cout<<add_check<<endl;
+    }
+
+    if(m5.size() != 0){
+       cout<<"Move error! (2)"<<endl; 
+    }
+
     matrix<double> sub = m1 - m2;
     matrix<double> const sub_check({13.9, -62.5, 25.3, -11.3, -17.5, -64.0, 24.8, 10.4, 65.95}, 3);
     if(!mat_eq(sub, sub_check, eps))
@@ -45,6 +83,43 @@ int main(){
         cout<<sub_check<<endl;;        
    }
 
+    matrix<double> m7 = m1;
+    matrix<double> m8 = m2;
+    matrix<double> move_sub_check = std::move(m7) - std::move(m8);
+    if(!mat_eq(move_sub_check, sub_check, eps)){
+        cout<<"Substraction problem, with move (3)"<<endl;
+        cout<<move_sub_check<<endl;
+        cout<<sub_check<<endl;
+    }
+
+    if(m7.size() != 0){
+       cout<<"Move error!(3)"<<endl; 
+    }
+
+    matrix<double> m10=m2;
+    matrix<double> move_sub_check2 = m1 - std::move(m10);
+    if(!mat_eq(move_sub_check2, sub_check, eps)){
+        cout<<"Substraction problem with move (4)"<<endl;
+        cout<<move_sub_check2<<endl;
+        cout<<sub_check<<endl;
+    }
+
+    if(m10.size() != 0){
+       cout<<"Move error! (4)"<<endl; 
+    }
+
+    matrix<double> m10 = m1;
+    matrix<double> move_sub_check3 = std::move(m10) - m2;
+    if(!mat_eq(move_sub_check3, sub_check, eps)){
+        cout<<"Substraction problem with move (5)"<<endl;
+        cout<<move_add_check3<<endl;
+        cout<<sub_check<<endl;
+    }
+
+    if(m10.size() != 0){
+       cout<<"Move error! (5)"<<endl; 
+    }
+  
     matrix<double> mul1 = m1 * m2;
     matrix<double> const mul1_check({3192.44, 6017.9, 2766.31, 3140.23, 9995.41, 7425.09, 5441.36, 13170.19, 7445.545}, 3);
     if(!mat_eq(mul1, mul1_check, eps))
@@ -61,6 +136,44 @@ int main(){
         cout<<"The multiplication of two matrixes is wrong."<<endl;
         cout<<mul2<<endl;
         cout<<mul2_check<<endl;; 
+    }
+
+    matrix<double> m13 = m1;
+    matrix<double> m14 = m2;
+    matrix<double> move_mul_check = m13 * std::move(m14);
+    if(!mat_eq(move_mul_check, mul1_check, eps)){
+        cout<<"Multipilication problem, with move (6)"<<endl;
+        cout<<move_mul_check<<endl;
+        cout<<mul1_check<<endl;
+    }
+    if(m14.size() != 0){
+       cout<<"Move error! (6)"<<endl; 
+    }
+
+    matrix<double> m15 = m1;
+    matrix<double> m16 = m2;
+    matrix<double> move_mul_check2 = std::move(m15) * m16;
+    if(!mat_eq(move_mul_check2, mul1_check, eps)){
+        cout<<"Multiplication problem, with move (7)"<<endl;
+        cout<<move_mul_check2<<endl;
+        cout<<mul1_check<<endl;
+    }
+
+    if(m15.size() != 0){
+       cout<<"Move error!(7)"<<endl; 
+    }
+
+    matrix<double> m17 = m1;
+    matrix<double> m18 = m2;
+    matrix<double> move_mul_check3 = std::move(m17) * std::move(m18);
+    if(!mat_eq(move_mul_check3, mul1_check, eps)){
+        cout<<"Multiplication problem, with move(8)"<<endl;
+        cout<<move_mul_check3<<endl;
+        cout<<mul1_check<<endl;
+    }
+
+    if(m17.size() != 0){
+       cout<<"Move error!(8)"<<endl; 
     }
 
     matrix<double> constmul1 = m1 * 1.4;
