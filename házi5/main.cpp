@@ -39,26 +39,40 @@ int main(){
     
     matrix<double> m3=m2;
     matrix<double> move_add_check = m1 + std::move(m3);
-    if(!mat_eq(move_add_check, add_check, eps)){
+    if(!mat_eq(move_add_check, add_check, eps))
+    {
         cout<<"Addition problem, with move (1)"<<endl;
         cout<<move_add_check<<endl;
         cout<<add_check<<endl;
     }
 
-    if(m3.size() != 0){
+    if(m3.dimension() != 0)
+    {
+       cout<<"Move error (1)!"<<endl; 
+    }
+
+    if(m3.size() != 0)
+    {
        cout<<"Move error (1)!"<<endl; 
     }
 
     matrix<double> m4 = m2;
     matrix<double> move_add_check2= std::move(m4) + m1;
-    if(!mat_eq(move_add_check2, add_check, eps)){
+    if(!mat_eq(move_add_check2, add_check, eps))
+    {
         cout<<"Addition problem, with move"<<endl;
         cout<<move_add_check2<<endl;
         cout<<add_check<<endl;
     }
+    
+    if(m4.dimension() != 0)
+    {
+       cout<<"Move error (2)!"<<endl; 
+    }
 
-    if(m4.size() != 0){
-       cout<<"Move error!"<<endl; 
+    if(m4.size() != 0)
+    {
+       cout<<"Move error (2)!"<<endl; 
     }
     
     matrix<double> m5 = m1;
@@ -69,17 +83,22 @@ int main(){
         cout<<move_add_check3<<endl;
         cout<<add_check<<endl;
     }
-
-    if(m5.size() != 0){
-       cout<<"Move error! (2)"<<endl; 
+    if(m5.dimension() != 0)
+    {
+       cout<<"Move error! (3)"<<endl; 
     }
 
-    matrix<double> sub = m1 - m2;
+    if(m5.size() != 0)
+    {
+       cout<<"Move error! (3)"<<endl; 
+    }
+
+    matrix<double> s = m1 - m2;
     matrix<double> const sub_check({13.9, -62.5, 25.3, -11.3, -17.5, -64.0, 24.8, 10.4, 65.95}, 3);
-    if(!mat_eq(sub, sub_check, eps))
+    if(!mat_eq(s, sub_check, eps))
     {
         cout<<"The substraction's def is wrong."<<endl;
-        cout<<sub<<endl;
+        cout<<s<<endl;
         cout<<sub_check<<endl;;        
    }
 
@@ -91,32 +110,49 @@ int main(){
         cout<<move_sub_check<<endl;
         cout<<sub_check<<endl;
     }
+    if(m7.dimension() != 0)
+    {
+       cout<<"Move error!(3)"<<endl; 
+    }
 
-    if(m7.size() != 0){
+    if(m7.size() != 0)
+    {
        cout<<"Move error!(3)"<<endl; 
     }
 
     matrix<double> m10=m2;
     matrix<double> move_sub_check2 = m1 - std::move(m10);
-    if(!mat_eq(move_sub_check2, sub_check, eps)){
+    if(!mat_eq(move_sub_check2, sub_check, eps))
+    {
         cout<<"Substraction problem with move (4)"<<endl;
         cout<<move_sub_check2<<endl;
         cout<<sub_check<<endl;
     }
-
-    if(m10.size() != 0){
+    if(m10.dimension() != 0)
+    {
        cout<<"Move error! (4)"<<endl; 
     }
 
-    matrix<double> m10 = m1;
-    matrix<double> move_sub_check3 = std::move(m10) - m2;
-    if(!mat_eq(move_sub_check3, sub_check, eps)){
+    if(m10.size() != 0)
+    {
+       cout<<"Move error! (4)"<<endl; 
+    }
+
+    matrix<double> m12 = m1;
+    matrix<double> move_sub_check3 = std::move(m12) - m2;
+    if(!mat_eq(move_sub_check3, sub_check, eps))
+    {
         cout<<"Substraction problem with move (5)"<<endl;
         cout<<move_add_check3<<endl;
         cout<<sub_check<<endl;
     }
+    if(m12.dimension() != 0)
+    {
+       cout<<"Move error! (5)"<<endl; 
+    }    
 
-    if(m10.size() != 0){
+    if(m12.size() != 0)
+    {
        cout<<"Move error! (5)"<<endl; 
     }
   
@@ -141,12 +177,20 @@ int main(){
     matrix<double> m13 = m1;
     matrix<double> m14 = m2;
     matrix<double> move_mul_check = m13 * std::move(m14);
-    if(!mat_eq(move_mul_check, mul1_check, eps)){
+    if(!mat_eq(move_mul_check, mul1_check, eps))
+    {
         cout<<"Multipilication problem, with move (6)"<<endl;
         cout<<move_mul_check<<endl;
         cout<<mul1_check<<endl;
     }
-    if(m14.size() != 0){
+
+    if(m14.dimension() != 0)
+    {
+       cout<<"Move error! (6)"<<endl; 
+    }
+
+    if(m14.size() != 0)
+    {
        cout<<"Move error! (6)"<<endl; 
     }
 
@@ -159,7 +203,13 @@ int main(){
         cout<<mul1_check<<endl;
     }
 
-    if(m15.size() != 0){
+    if(m15.dimension() != 0)
+    {
+       cout<<"Move error!(7)"<<endl; 
+    }
+
+    if(m15.size() != 0)
+    {
        cout<<"Move error!(7)"<<endl; 
     }
 
@@ -172,7 +222,13 @@ int main(){
         cout<<mul1_check<<endl;
     }
 
-    if(m17.size() != 0){
+    if(m17.dimension() != 0)
+    {
+       cout<<"Move error!(8)"<<endl; 
+    }
+
+    if(m17.size() != 0)
+    {
        cout<<"Move error!(8)"<<endl; 
     }
 
@@ -193,7 +249,7 @@ int main(){
         cout<<constmul_check<<endl;; 
     }
 
-    matrix<double> divi = m1/10;    
+    matrix<double> divi = m1/10.0;    
     matrix<double> divi_check({3.02, 1.2, 6.14, 1.57, 8.16, 1.76, 6.35, 5.24, 7.73}, 3);
     if(!mat_eq(divi, divi_check, eps))
     {
