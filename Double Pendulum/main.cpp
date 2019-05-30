@@ -87,10 +87,10 @@ struct App
 			{
 				double L1s=70;
 				double L2s=70;
-				double x1= 300+L1s*cos(state.x);
-				double y1= 200+L1s*sin(state.x);
-				double x2= x1+L2s*cos(state.y);
-				double y2= y1 + L2s*sin(state.y);
+				double x1= 300+L1s*sin(state.x);
+				double y1= 200+L1s*cos(state.x);
+				double x2= x1+L2s*sin(state.y);
+				double y2= y1 + L2s*cos(state.y);
 
 				r.ellipse(300, 200, 5, 5, black);
 				r.line(300, 200, x1, y1, blue);
