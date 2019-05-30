@@ -49,7 +49,7 @@ struct App
 		m1 = 1., m2 = 1., L1 = 3., L2 = 3., g=9.81;
 		h = 0.00002;
 		time = 0.0;
-		state = {0.2, 0.2, 0.0, 0.0};
+		state = {1.0, 1.0, 1.0, 1.0};
 	}
 
 	int enterApp()
@@ -83,23 +83,22 @@ struct App
 			auto black = [](auto) {return color(0, 0, 0);};
 			auto red = [](auto) {return color(240, 0, 21);};
 
-			if(data.size() > 4)
+			if(time >= 0.0)
 			{
-			double L1s=70;
-			double L2s=70;
-			double x1= 300+L1s*cos(([&](double i){ return data[(int)i].x;}));
-			double y1= 200+L1s*sin(([&](double i){ return data[(int)i].x;}));
-			double x2= x1+L2s*cos(([&](double i){ return data[(int)i].y;}));
-			double y2= y1 + L2s*sin(([&](double i){ return data[(int)i].y;}));
+				double L1s=70;
+				double L2s=70;
+				double x1= 300+L1s*cos(state.x);
+				double y1= 200+L1s*sin(state.x);
+				double x2= x1+L2s*cos(state.y);
+				double y2= y1 + L2s*sin(state.y);
 
-			r.ellipse(300, 200, 5, 5, black);
-			r.line(300, 200, x1, y1, blue);
-			r.ellipse(x1, y1, 5, 5, blue);
-			r.line(x1, y1, x2, y2, red);
-			r.ellipse(x2, y2, 5, 5, red);
+				r.ellipse(300, 200, 5, 5, black);
+				r.line(300, 200, x1, y1, blue);
+				r.ellipse(x1, y1, 5, 5, blue);
+				r.line(x1, y1, x2, y2, red);
+				r.ellipse(x2, y2, 5, 5, red);
 			}
 		});
-
 		bool res = wnd.open(L"Double Pendulum Simulation", {64, 64}, {640, 480}, true, [&]{ return true; });
 		return res ? 0 : -1;
 	}
